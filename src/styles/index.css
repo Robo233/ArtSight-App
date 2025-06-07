@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Taken from https://fonts.google.com */
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* The svg must be excluded because in case of the ButtonWithLabelAndIcon, the child FontAwesomeIcon's CSS properties cannot be overriden using the activeClass of the Button */
+*:not(svg):not(svg *) {
+  color: var(--color-text);
+}
+
+p, span, input, textarea, label, h1, h2, h3, h4, h5, h6, strong { /* This is needed, because Ionic removes it otherwise */
+  user-select: text;
+  cursor: text;
+
+}
+
+#root {
+  font-family: "Poppins", sans-serif;
+  font-weight: 0;
+  background-color: var(--color-background);
+  
+}
+
+html{
+  background-color: var(--color-background);
+}
+
+strong {
+  font-weight: 700;
+}
+
+[data-theme="light"] {
+  --color-primary: #ff899e;
+  --color-primary-hover: #ff5c7a;
+  --color-secondary: #ffd8df;
+  --color-background: #eeeeee;
+  --color-background-opacity: rgba(238, 238, 238, 0.55);
+  --color-background-opacity-contrast: rgba(0,0,0, 0.55);
+  --color-background-shadow: rgba(128, 128, 128, 1);
+  --color-text: #000000;
+  --color-text-hover: rgb(78, 78, 78);
+}
+
+[data-theme="dark"] {
+  --color-primary: #ff899e;
+  --color-primary-hover: #ff5c7a;
+  --color-secondary: #ffd8df;
+  --color-background: #000000;
+  --color-background-opacity: rgba(0, 0, 0, 0.55);
+  --color-background-opacity-contrast: rgba(255, 255, 255, 0.55);
+  --color-background-shadow: rgba(128, 128, 128, 1);
+  --color-text: #eeeeee;
+  --color-text-hover: rgb(178, 178, 178);
+}
+
+.background-opacity {
+  background-color: rgba(var(--background-color), 0.5);
+}
+
+button:focus {
+  outline: none;
+}
+
+@layer utilities {
+  .responsive-container {
+    @apply px-2 s:px-4 sm:px-12 lg:px-24 xl:px-32;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+}
+
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}

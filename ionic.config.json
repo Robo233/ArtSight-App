@@ -1,0 +1,7 @@
+{
+  "name": "ArtSight",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

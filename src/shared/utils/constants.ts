@@ -1,0 +1,3 @@
+export const HEADER_FOOTER_HEIGHT = 56;
+export const HEADER_FOOTER_VERTICAL_OFFSET = 24;
+export const LOADING_SPINNER_SIZE = 100;

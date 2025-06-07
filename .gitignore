@@ -1,0 +1,5 @@
+/.env
+/.vscode
+/android
+/dist
+/node_modules
