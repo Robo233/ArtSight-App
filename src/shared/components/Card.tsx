@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import NavigationButton from "../buttons/NavigationButton";
 import { EntityType } from "../types/types-common";
+import { getAppApiUrl } from "../services/environment";
 
 interface CardProps {
   id: string;
@@ -61,9 +62,7 @@ const Card: React.FC<CardProps> = ({
       <div className="flex">
         <div className="flex-none w-[94px] h-[94px]">
           <img
-            src={`${
-              import.meta.env.VITE_API_URL_APP
-            }/media/${entityType}/${id}/images/MainImages/main_image_thumbnail.jpg`}
+            src={`${getAppApiUrl()}/media/${entityType}/${id}/images/MainImages/main_image_thumbnail.jpg`}
             alt={title}
             className="rounded-l-lg w-full h-full object-cover relative right-[0px]"
             onError={handleImageError}

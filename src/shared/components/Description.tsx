@@ -17,6 +17,7 @@ import {
   cancelExhibitionNotification,
   scheduleExhibitionNotification,
 } from "../services/notificationService";
+import { getAppApiUrl } from "../services/environment";
 
 interface DescriptionProps {
   id: string;
@@ -84,10 +85,8 @@ const Description: React.FC<DescriptionProps> = ({
 
   const toggleFavorite = async () => {
     const endpoint = isFavoriteState
-      ? `${
-          import.meta.env.VITE_API_URL_APP
-        }/favorites/remove/${id}/${entityType}`
-      : `${import.meta.env.VITE_API_URL_APP}/favorites/add/${id}/${entityType}`;
+      ? `${getAppApiUrl()}/favorites/remove/${id}/${entityType}`
+      : `${getAppApiUrl()}/favorites/add/${id}/${entityType}`;
     const method = isFavoriteState ? "DELETE" : "POST";
 
     const response = await fetch(endpoint, {

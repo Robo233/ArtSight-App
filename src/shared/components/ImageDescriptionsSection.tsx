@@ -7,6 +7,7 @@ import { deleteImage } from "../services/entityServiceDashboard";
 import { LanguageContext } from "../contexts/LanguageContext";
 import ButtonWithLabel from "../buttons/ButtonWithLabel";
 import { t } from "i18next";
+import { getAppApiUrl } from "../services/environment";
 
 interface ImageDescriptionsSectionProps {
   imageDescriptions: ImageDescription[];
@@ -55,9 +56,7 @@ const ImageDescriptionsSection: React.FC<ImageDescriptionsSectionProps> = ({
 
     const fetchImagePromises = imageDescriptions.map(async (_, idx) => {
       const index = idx + 1;
-      const imageUrl = `${
-        import.meta.env.VITE_API_URL_APP
-      }/media/${entityType}/${id}/Images/GalleryImages/${index}.jpg?timestamp=${timestamp}`;
+      const imageUrl = `${getAppApiUrl()}/media/${entityType}/${id}/Images/GalleryImages/${index}.jpg?timestamp=${timestamp}`;
       const imageResponse = await fetch(imageUrl);
       return imageResponse.ok ? imageUrl : "";
     });

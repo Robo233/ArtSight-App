@@ -6,6 +6,7 @@ import Card from "../../../shared/components/Card";
 import Section from "../../../shared/components/Section";
 import CardListSection from "../../../shared/components/CardListSection";
 import { useEntityDataApp } from "../../../shared/hooks/useEntityDataApp";
+import { getAppApiUrl } from "../../../shared/services/environment";
 
 const ArtworkDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -39,9 +40,7 @@ const ArtworkDetailPage = () => {
       )}
 
       <CardListSection
-        url={`${
-          import.meta.env.VITE_API_URL_APP
-        }/artworkDetails/artworkId?parentId=${encodeURIComponent(
+        url={`${getAppApiUrl()}/artworkDetails/artworkId?parentId=${encodeURIComponent(
           entity.artworkId
         )}`}
         entityType="artworkDetail"

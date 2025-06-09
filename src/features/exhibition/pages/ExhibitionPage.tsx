@@ -12,6 +12,7 @@ import GallerySection from "../../../shared/components/GallerySection";
 import SocialMediaSection from "../../../shared/components/SocialMediaSection";
 import InjectableMap from "../../../shared/components/InjectableMap";
 import { useEntityDataApp } from "../../../shared/hooks/useEntityDataApp";
+import { getAppApiUrl } from "../../../shared/services/environment";
 
 interface ResourceTableItem {
   label: string;
@@ -121,9 +122,9 @@ const ExhibitionPage = () => {
       />
 
       <CardListSection
-        url={`${
-          import.meta.env.VITE_API_URL_APP
-        }/artworks/exhibitionId?parentId=${encodeURIComponent(id)}`}
+        url={`${getAppApiUrl()}/artworks/exhibitionId?parentId=${encodeURIComponent(
+          id
+        )}`}
         entityType="artwork"
         title={t("exhibitionPage.artworksFromExhibition")}
       />

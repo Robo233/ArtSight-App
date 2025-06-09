@@ -4,6 +4,7 @@ import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 import { EntityType } from "../types/types-common";
 import Button from "../buttons/Button";
 import CustomAudioPlayer from "./CustomAudioPlayer";
+import { getAppApiUrl } from "../services/environment";
 
 interface TextToSpeechSystemProps {
   id: string;
@@ -20,9 +21,7 @@ const TextToSpeechSystem: React.FC<TextToSpeechSystemProps> = ({
   const [showControls, setShowControls] = useState(false);
   const [audioAvailable, setAudioAvailable] = useState<boolean | null>(null);
 
-  const audioUrl = `${
-    import.meta.env.VITE_API_URL_APP
-  }/media/${entityType}/${id}/audios/${descriptionLanguageCode}.mp3`;
+  const audioUrl = `${getAppApiUrl()}/media/${entityType}/${id}/audios/${descriptionLanguageCode}.mp3`;
 
   useEffect(() => {
     fetch(audioUrl, { method: "HEAD" })

@@ -9,6 +9,7 @@ import PageTitle from "../../../shared/components/PageTitle";
 import MarkerWithInfoWindow from "../../../shared/components/MarkerWithInfoWindow";
 import UserMarker from "../components/UserMarker";
 import ServerErrorPage from "../../user/pages/ServerErrorPage";
+import { getAppApiUrl } from "../../../shared/services/environment";
 
 type LatLng = {
   lat: number;
@@ -29,11 +30,7 @@ const Maps: React.FC = () => {
   const [serverError, setServerError] = useState(false);
 
   useEffect(() => {
-    fetch(
-      `${
-        import.meta.env.VITE_API_URL_APP
-      }/exhibitions/all/?languageCode=${languageCode}`
-    )
+    fetch(`${getAppApiUrl()}/exhibitions/all/?languageCode=${languageCode}`)
       .then((response) => response.json())
       .then((data) => {
         setExhibitions(data.entities);
@@ -45,11 +42,7 @@ const Maps: React.FC = () => {
   }, [languageCode]);
 
   useEffect(() => {
-    fetch(
-      `${
-        import.meta.env.VITE_API_URL_APP
-      }/artworks/all/?languageCode=${languageCode}`
-    )
+    fetch(`${getAppApiUrl()}/artworks/all/?languageCode=${languageCode}`)
       .then((response) => response.json())
       .then((data) => {
         setArtworks(data.entities);

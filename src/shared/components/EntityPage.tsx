@@ -14,6 +14,7 @@ import PageTitle from "./PageTitle";
 import EntityNotFound from "./EntityNotFound";
 import { PageEntity } from "../types/types-app";
 import ServerErrorPage from "../../features/user/pages/ServerErrorPage";
+import { getAppApiUrl } from "../services/environment";
 
 interface EntityPageProps {
   entity: PageEntity;
@@ -34,7 +35,7 @@ const EntityPage: React.FC<EntityPageProps> = ({
   notFound,
 }) => {
   const storage = new Storage();
-  const imageSrc = `${import.meta.env.VITE_API_URL_APP}/media/${entityType}/${
+  const imageSrc = `${getAppApiUrl()}/media/${entityType}/${
     entity.id
   }/images/MainImages/main_image.jpg`;
   const descriptionOffsetY = 200; // This ensures that if the screen's height is close to the image's height, then the description is still visbile. Otherwise, the image can occupy the whole screen

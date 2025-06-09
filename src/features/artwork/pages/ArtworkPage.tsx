@@ -11,6 +11,7 @@ import CardListSection from "../../../shared/components/CardListSection";
 import InjectableMap from "../../../shared/components/InjectableMap";
 import { useEntityDataApp } from "../../../shared/hooks/useEntityDataApp";
 import ChatBot from "../../../shared/components/ChatBot";
+import { getAppApiUrl } from "../../../shared/services/environment";
 
 const ArtworkPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,18 +89,16 @@ const ArtworkPage = () => {
         </Section>
 
         <CardListSection
-          url={`${
-            import.meta.env.VITE_API_URL_APP
-          }/artworkDetails/artworkId?parentId=${encodeURIComponent(id)}`}
+          url={`${getAppApiUrl()}/artworkDetails/artworkId?parentId=${encodeURIComponent(
+            id
+          )}`}
           entityType="artworkDetail"
           title={t("artworkPage.detailsOfTheArtwork")}
         />
 
         {entity.artistId && (
           <CardListSection
-            url={`${
-              import.meta.env.VITE_API_URL_APP
-            }/artworks/artistId?parentId=${encodeURIComponent(
+            url={`${getAppApiUrl()}/artworks/artistId?parentId=${encodeURIComponent(
               entity.artistId
             )}`}
             entityType="artwork"
@@ -110,9 +109,7 @@ const ArtworkPage = () => {
 
         {entity.exhibitionId && (
           <CardListSection
-            url={`${
-              import.meta.env.VITE_API_URL_APP
-            }/artworks/exhibitionId?parentId=${encodeURIComponent(
+            url={`${getAppApiUrl()}/artworks/exhibitionId?parentId=${encodeURIComponent(
               entity.exhibitionId
             )}`}
             entityType="artwork"

@@ -5,6 +5,7 @@ import CardListSection from "../../../shared/components/CardListSection";
 import GallerySection from "../../../shared/components/GallerySection";
 import { useEntityDataApp } from "../../../shared/hooks/useEntityDataApp";
 import { useParams } from "react-router";
+import { getAppApiUrl } from "../../../shared/services/environment";
 
 const GenrePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,9 +29,9 @@ const GenrePage = () => {
       notFound={notFound}
     >
       <CardListSection
-        url={`${
-          import.meta.env.VITE_API_URL_APP
-        }/artworks/genreId?parentId=${encodeURIComponent(entity.id)}`}
+        url={`${getAppApiUrl()}/artworks/genreId?parentId=${encodeURIComponent(
+          entity.id
+        )}`}
         entityType="artwork"
         title={t("genrePage.artworksOfThisGenre")}
       />

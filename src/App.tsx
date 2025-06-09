@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
 import "./styles/index.css";
 import { ThemeProvider, useTheme } from "./shared/contexts/ThemeContext";
@@ -38,6 +33,7 @@ import NotFoundPage from "./features/user/pages/NotFoundPage";
 import BackButtonOverride from "./BackButtonOverride";
 import useNotificationNavigation from "./shared/hooks/useNotificationNavigation";
 import { Capacitor } from "@capacitor/core";
+import { initializeEnvironment } from "./shared/services/environment";
 
 const MainRoutes = () => {
   const theme = useTheme().theme;
@@ -179,6 +175,7 @@ const App = () => {
 
   useEffect(() => {
     const initializeApp = async () => {
+      await initializeEnvironment();
       const authStatus = await isAuthenticatedOrGuest();
       setIsAuthenticated(authStatus);
       setAuthReady(true);
@@ -194,7 +191,7 @@ const App = () => {
     <I18nextProvider i18n={i18n}>
       <ThemeProvider>
         <BackButtonOverride />
-        <Router>
+        <BrowserRouter>
           <Switch>
             <Route
               exact
@@ -207,7 +204,7 @@ const App = () => {
             />
             <Route path="/" component={MainRoutes} />
           </Switch>
-        </Router>
+        </BrowserRouter>
       </ThemeProvider>
     </I18nextProvider>
   );

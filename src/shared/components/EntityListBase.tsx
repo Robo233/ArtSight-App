@@ -13,6 +13,7 @@ import Card from "./Card";
 import ButtonWithLabel from "../buttons/ButtonWithLabel";
 import LoadingSpinner from "./LoadingSpinner";
 import ServerErrorPage from "../../features/user/pages/ServerErrorPage";
+import { getAppApiUrl } from "../services/environment";
 
 interface EntityListConfig {
   additionalParams?: Record<string, string>;
@@ -49,7 +50,7 @@ const EntityListBase = ({
   );
 
   const buildInitialUrl = (query: string): string => {
-    const url = new URL(`${import.meta.env.VITE_API_URL_APP}/entityfilter`);
+    const url = new URL(`${getAppApiUrl()}/entityfilter`);
     url.searchParams.append("searchString", query);
     url.searchParams.append("languageCode", getLanguageCode());
     if (config?.additionalParams) {
@@ -65,9 +66,7 @@ const EntityListBase = ({
     offset: number,
     entityType: string
   ): string => {
-    const url = new URL(
-      `${import.meta.env.VITE_API_URL_APP}/entityfilter/by-entity`
-    );
+    const url = new URL(`${getAppApiUrl()}/entityfilter/by-entity`);
     url.searchParams.append("searchString", query);
     url.searchParams.append("offset", offset.toString());
     url.searchParams.append("languageCode", getLanguageCode());

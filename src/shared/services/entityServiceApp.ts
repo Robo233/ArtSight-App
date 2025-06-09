@@ -1,6 +1,7 @@
 import { getLanguageCode } from "../../i18n";
 import { PageEntity } from "../types/types-app";
 import { EntityType } from "../types/types-common";
+import { getAppApiUrl } from "./environment";
 
 export const fetchEntity = async <T extends PageEntity>(
   entityType: EntityType,
@@ -15,7 +16,7 @@ export const fetchEntity = async <T extends PageEntity>(
   try {
     const response = await fetch(
       `${
-        import.meta.env.VITE_API_URL_APP
+        getAppApiUrl()
       }/${entityType}s/${entityId}/?languageCode=${languageCode}`,
       {
         headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},

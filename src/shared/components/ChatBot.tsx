@@ -6,6 +6,7 @@ import Button from "../buttons/Button";
 import LoadingSpinner from "./LoadingSpinner";
 import ButtonWithLabel from "../buttons/ButtonWithLabel";
 import parseMarkup from "../utils/parseMarkup";
+import { getAppApiUrl } from "../services/environment";
 
 interface ChatBotProps {
   id: string;
@@ -54,7 +55,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ id, languageCode }) => {
   const handleStartConversation = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL_APP}/ai`, {
+      const response = await fetch(`${getAppApiUrl()}/ai`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, languageCode }),
@@ -76,14 +77,11 @@ const ChatBot: React.FC<ChatBotProps> = ({ id, languageCode }) => {
     setIsLoading(true);
     try {
       const conversationToken = localStorage.getItem("conversationToken") || "";
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL_APP}/ai/followup`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt, languageCode, conversationToken }),
-        }
-      );
+      const response = await fetch(`${getAppApiUrl()}/ai/followup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt, languageCode, conversationToken }),
+      });
       const data = await response.json();
       setResponses((prev) => [
         ...prev,

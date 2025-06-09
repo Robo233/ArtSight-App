@@ -10,6 +10,7 @@ import MultiEntitySearchSelector from "../../../shared/components/MultiEntitySea
 import LocationPickerSection from "../../../shared/components/LocationPickerSection";
 import { fetchEntity } from "../../../shared/services/entityServiceDashboard";
 import { t } from "i18next";
+import { getDashboardApiUrl } from "../../../shared/services/environment";
 
 const ArtworkForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -158,7 +159,7 @@ const ArtworkForm: React.FC = () => {
     try {
       const authToken = localStorage.getItem("authToken");
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL_DASHBOARD}/artworks/qr/${id}`,
+        `${getDashboardApiUrl()}/artworks/qr/${id}`,
         {
           method: "POST",
           headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},

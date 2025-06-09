@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { EntityType } from "../types/types-common";
 import Section from "./Section";
@@ -22,6 +22,7 @@ import EntityNotFound from "./EntityNotFound";
 import ServerErrorPage from "../../features/user/pages/ServerErrorPage";
 import Tooltip from "./Tooltip";
 import LoadingSpinner from "./LoadingSpinner";
+import { getDashboardApiUrl } from "../services/environment";
 
 interface EntityFormProps<T extends PageEntity> {
   entityType: EntityType;
@@ -33,7 +34,7 @@ interface EntityFormProps<T extends PageEntity> {
   onSuccess?: () => void;
   translatableFields?: string[];
   externalLoading?: boolean;
-  bottomButtons?: JSX.Element[];
+  bottomButtons?: React.ReactNode[];
   serverError?: boolean;
   notFound?: boolean;
 }
@@ -56,7 +57,6 @@ function EntityForm<T extends PageEntity>({
   const defaultLanguages = ["en", "ro"];
 
   const [isLanguageDropdownOpen, setLanguageDropdownOpen] = useState(false);
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
   const [submitMessageType, setSubmitMessageType] = useState<
@@ -67,14 +67,67 @@ function EntityForm<T extends PageEntity>({
   const mainImageInputRef = useRef<HTMLInputElement>(null);
   const dropdownContainerRef = useRef<HTMLDivElement>(null);
 
+  const allTranslatableFields = ["name", "description", ...translatableFields];
+
+  const existingLanguages = Array.from(
+    new Set<string>(
+      allTranslatableFields.flatMap((field) => {
+        const fieldVal = (entity as any)[field];
+        if (Array.isArray(fieldVal)) {
+          return fieldVal.flatMap((item: any) =>
+            item && typeof item === "object" ? Object.keys(item) : []
+          );
+        } else if (fieldVal && typeof fieldVal === "object") {
+          return Object.keys(fieldVal);
+        }
+        return [];
+      })
+    )
+  );
+
+  const addLanguage = useCallback(
+    (lang: string) => {
+      setEntity((prev) => {
+        const updated: any = { ...prev };
+        allTranslatableFields.forEach((field) => {
+          const current = updated[field] || {};
+          updated[field] = {
+            ...current,
+            [lang]: "",
+          };
+        });
+        return updated;
+      });
+    },
+    [allTranslatableFields, setEntity]
+  );
+
+  const removeLanguage = useCallback(
+    (lang: string) => {
+      setEntity((prev) => {
+        const updated: any = { ...prev };
+        allTranslatableFields.forEach((field) => {
+          const { [lang]: _, ...rest } = updated[field] || {};
+          updated[field] = rest;
+        });
+        return updated;
+      });
+    },
+    [allTranslatableFields, setEntity]
+  );
+
+  const languageContextValue = {
+    existingLanguages,
+    addLanguage,
+    removeLanguage,
+  };
+
   useEffect(() => {
     if (!entityId) return;
     const fetchMainImage = async () => {
       try {
         const timestamp = new Date().getTime();
-        const imageUrl = `${
-          import.meta.env.VITE_API_URL_DASHBOARD
-        }/media/${entityType}/${entityId}/Images/MainImages/main_image.jpg?timestamp=${timestamp}`;
+        const imageUrl = `${getDashboardApiUrl()}/media/${entityType}/${entityId}/Images/MainImages/main_image.jpg?timestamp=${timestamp}`;
         const response = await fetch(imageUrl);
         if (response.ok) {
           setMainImageURL(imageUrl);
@@ -101,65 +154,6 @@ function EntityForm<T extends PageEntity>({
       return () => clearTimeout(timerId);
     }
   }, [submitMessage]);
-
-  const addLanguage = (lang: string) => {
-    setEntity((prev) => {
-      const updated: any = { ...prev };
-      allTranslatableFields.forEach((field) => {
-        const current = updated[field] || {};
-        updated[field] = {
-          ...current,
-          [lang]: "",
-        };
-      });
-      return updated;
-    });
-  };
-
-  const removeLanguage = (lang: string) => {
-    setEntity((prev) => {
-      const updated: any = { ...prev };
-      allTranslatableFields.forEach((field) => {
-        const { [lang]: _, ...rest } = updated[field] || {};
-        updated[field] = rest;
-      });
-      return updated;
-    });
-  };
-
-  const allTranslatableFields = useMemo(
-    () => ["name", "description", ...translatableFields],
-    [translatableFields]
-  );
-
-  const existingLanguages = useMemo(() => {
-    const uniqueLangs = new Set<string>();
-
-    allTranslatableFields.forEach((field) => {
-      const fieldVal = (entity as any)[field];
-
-      if (Array.isArray(fieldVal)) {
-        fieldVal.forEach((item: any) => {
-          if (item && typeof item === "object") {
-            Object.keys(item).forEach((lang) => uniqueLangs.add(lang));
-          }
-        });
-      } else if (fieldVal && typeof fieldVal === "object") {
-        Object.keys(fieldVal).forEach((lang) => uniqueLangs.add(lang));
-      }
-    });
-
-    return Array.from(uniqueLangs);
-  }, [entity, allTranslatableFields]);
-
-  const languageContextValue = useMemo(
-    () => ({
-      existingLanguages,
-      addLanguage,
-      removeLanguage,
-    }),
-    [existingLanguages, addLanguage, removeLanguage]
-  );
 
   const handleTranslationChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -214,11 +208,18 @@ function EntityForm<T extends PageEntity>({
   ): FormData {
     for (const key in data) {
       const value = data[key];
-      if (value === undefined || value === null) {
+      const formKey = parentKey ? `${parentKey}[${key}]` : key;
+
+      // Skip undefined values entirely
+      if (value === undefined) {
         continue;
       }
 
-      const formKey = parentKey ? `${parentKey}[${key}]` : key;
+      // Convert null to an empty string and append
+      if (value === null) {
+        formData.append(formKey, "");
+        continue;
+      }
 
       if (value instanceof File) {
         formData.append(formKey, value);
@@ -286,7 +287,7 @@ function EntityForm<T extends PageEntity>({
     const authToken = localStorage.getItem("authToken");
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL_DASHBOARD}/${entityType}s/upsert`,
+        `${getDashboardApiUrl()}/${entityType}s/upsert`,
         {
           method: "POST",
           body: formData,
@@ -430,9 +431,8 @@ function EntityForm<T extends PageEntity>({
                 {existingLanguages.map((lang) => (
                   <Section key={lang} title={lang.toUpperCase()}>
                     {allTranslatableFields.map((field) => (
-                      <>
+                      <React.Fragment key={`${lang}-${field}`}>
                         <Input
-                          key={`${lang}-${field}`}
                           label={`${t(`shared.${field}`)} (${lang})`}
                           type={field === "description" ? "textarea" : "text"}
                           value={(entity as any)[field]?.[lang] || ""}
@@ -447,7 +447,7 @@ function EntityForm<T extends PageEntity>({
                           height={field === "description" ? "600px" : "auto"}
                           tooltipKey={`${entityType}Form.tooltip.${field}`}
                         />
-                      </>
+                      </React.Fragment>
                     ))}
                   </Section>
                 ))}

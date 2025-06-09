@@ -7,6 +7,7 @@ import Button from "../buttons/Button";
 import { t } from "i18next";
 import capitalizeFirstLetter from "../utils/capitalizeFirstLetter";
 import { getLanguageCode } from "../../i18n";
+import { getAppApiUrl } from "../services/environment";
 
 interface EntitySearchSelectorProps {
   entityType: EntityType;
@@ -29,7 +30,7 @@ const EntitySearchSelector: React.FC<EntitySearchSelectorProps> = ({
   const performSearch = async () => {
     setLoading(true);
     try {
-      const url = new URL(`${import.meta.env.VITE_API_URL_APP}/entityfilter`);
+      const url = new URL(`${getAppApiUrl()}/entityfilter`);
       url.searchParams.append("searchString", searchQuery);
       url.searchParams.append("languageCode", getLanguageCode());
       url.searchParams.append("entityType", entityType);

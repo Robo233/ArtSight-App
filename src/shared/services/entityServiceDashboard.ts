@@ -1,6 +1,7 @@
 import { getLanguageCode } from "../../i18n";
 import { EntityType } from "../types/types-common";
 import { PageEntity } from "../types/types-dashboard";
+import { getDashboardApiUrl } from "./environment";
 
 export const fetchEntity = async <T extends PageEntity | undefined>(
   entityType: EntityType,
@@ -14,7 +15,7 @@ export const fetchEntity = async <T extends PageEntity | undefined>(
     const authToken = localStorage.getItem("authToken");
 
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL_DASHBOARD}/${entityType}s/${entityId}/?languageCode=${languageCode}`, { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {}},
+      `${getDashboardApiUrl()}/${entityType}s/${entityId}/?languageCode=${languageCode}`, { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {}},
     );
 
     if (response.status === 204 || response.status === 404) {
@@ -49,7 +50,7 @@ export const deleteImage = (
 
   fetch(
     `${
-      import.meta.env.VITE_API_URL_DASHBOARD
+      getDashboardApiUrl()
     }/images/delete/${entityType}/${id}/${fileName}`,
     {
       method: "DELETE",
@@ -64,7 +65,7 @@ export const deleteImage = (
 export const deleteEntity = async (entityType: string, entityId: string) => {
   const authToken = localStorage.getItem("authToken");
   return fetch(
-    `${import.meta.env.VITE_API_URL_DASHBOARD}/${entityType}s/delete/${entityId}`,
+    `${getDashboardApiUrl()}/${entityType}s/delete/${entityId}`,
     {
       method: "DELETE",
       headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},

@@ -8,6 +8,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { GenericOAuth2 } from "@capacitor-community/generic-oauth2";
 import GoogleSignInButton from "./GoogleSignInButton";
 import HeaderWithSettingsAndTitle from "../../../shared/navigation/headers/HeaderWithSettingsAndTitle";
+import { getAppApiUrl } from "../../../shared/services/environment";
 
 const AuthForm: React.FC = () => {
   const { mode } = useParams<{ mode: string }>();
@@ -42,7 +43,7 @@ const AuthForm: React.FC = () => {
           : response.authorization_response?.id_token;
 
       const backendResponse = await fetch(
-        `${import.meta.env.VITE_API_URL_APP}/auth/google-login/`,
+        `${getAppApiUrl()}/auth/google-login/`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -70,14 +71,11 @@ const AuthForm: React.FC = () => {
   const handleGoogleLogin = async (credentialResponse: any) => {
     try {
       setTimeout(async () => {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL_APP}/auth/google-login/`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: credentialResponse.credential }),
-          }
-        );
+        const response = await fetch(`${getAppApiUrl()}/auth/google-login/`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: credentialResponse.credential }),
+        });
         if (response.ok) {
           const data = await response.json();
           localStorage.setItem("authToken", data.token);
