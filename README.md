@@ -1,4 +1,4 @@
-# temp-app
+# ArtSight-App
 
 An Ionic project using React
 
