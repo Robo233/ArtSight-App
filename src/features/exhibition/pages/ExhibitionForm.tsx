@@ -473,7 +473,7 @@ const ExhibitionForm: React.FC = () => {
               <div className="flex justify-center mb-4">
                 <ButtonWithLabel
                   type="button"
-                  label="Add Custom Entry"
+                  label={t("exhibitionForm.addDay")}
                   onClick={addCustomEntry}
                 />
               </div>

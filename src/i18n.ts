@@ -47,7 +47,7 @@ i18n
             name: "Name",
             description: "Description",
             medium: "Medium",
-            nonStop: "Non stop",
+            nonStop: "Non-stop",
             startTime: "Start Time",
             endTime: "End Time",
             monday: "Monday",
@@ -125,7 +125,7 @@ i18n
             findOutMore: "Find out more",
           },
           maps: {
-            lookAroundTheMap: "Look around the map for exhibitions",
+            lookAroundTheMap: "Look around the map for exhibitions and artworks",
           },
           camera: {
             scanAQR: "Scan a QR",
@@ -199,6 +199,7 @@ i18n
             noSchedule: "No schedule",
             fixedSchedule: "Fixed schedule",
             customSchedule: "Custom schedule",
+            addDay: "Add day",
             tooltip: {
               genres: "The genres of the artworks that are present at the exhibition.",
               mainImage: "This is displayed on the top of the page. Choose an image that clearly represents the exhibition, such as an image of the interior.",
@@ -331,7 +332,7 @@ i18n
             name: "Nume",
             description: "Descriere",
             medium: "Mediu",
-            nonStop: "Non stop",
+            nonStop: "Non-stop",
             startTime: "Început",
             endTime: "Sfârșit",
             monday: "Luni",
@@ -409,7 +410,7 @@ i18n
             findOutMore: "Află mai multe",
           },
           maps: {
-            lookAroundTheMap: "Uită-te pe hartă pentru expoziții",
+            lookAroundTheMap: "Uită-te pe hartă pentru expoziții și lucrări de artă",
           },
           camera: {
             scanAQR: "Scanează un QR",
@@ -482,6 +483,7 @@ i18n
             noSchedule: "Fără program",
             fixedSchedule: "Program fix",
             customSchedule: "Program customizat",
+            addDay: "Adaugă zi",
             tooltip: {
               genres: "Genurile lucrărilor de artă prezente la expoziție.",
               mainImage: "Este afișată în partea de sus a paginii. Alege o imagine care reprezintă clar expoziția, cum ar fi o imagine a interiorului.",

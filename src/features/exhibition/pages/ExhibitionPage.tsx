@@ -42,7 +42,9 @@ const ExhibitionPage = () => {
       return schedule.fixedEntries.map((entry) => {
         if (entry.isNonStop)
           return `${t(`shared.${entry.day}`)}: ${t("shared.nonStop")}`;
-        return `${entry.day}: ${entry.startTime} - ${entry.endTime}`;
+        return `${t(`shared.${entry.day}`)}: ${entry.startTime} - ${
+          entry.endTime
+        }`;
       });
     }
 

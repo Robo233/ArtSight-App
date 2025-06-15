@@ -13,7 +13,7 @@ const HeaderWithCenteredText: React.FC<HeaderWithCenteredTextProps> = ({
   return (
     <Header>
       <SettingsButton />
-      <div className="top-5 text-center ml-20 mr-20">
+      <div className="top-5 text-center mx-10">
         <p>{text}</p>
       </div>
     </Header>

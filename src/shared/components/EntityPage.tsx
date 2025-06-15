@@ -142,7 +142,7 @@ const EntityPage: React.FC<EntityPageProps> = ({
               style={{
                 marginTop: `${descriptionTopPadding}px`,
               }}
-              className="bg-background-opacity backdrop-blur-lg  rounded-t-[2rem] pb-1 min-h-screen mx-auto h-full"
+              className="bg-background-opacity backdrop-blur-lg rounded-t-[2rem] pb-1 min-h-screen mx-auto h-full"
             >
               <div className="responsive-container ">
                 <Description
